@@ -4,6 +4,7 @@
 class User {
 private:
     // Properties
+    int id;
     std::string name;
     double balance;
     std::string publicKey;
@@ -11,7 +12,7 @@ private:
     // Methods
     std::string generatePublicKey(std::string name);
 public:
-    User(std::string name, double balance);
+    User(int id, std::string name, double balance);
 
     friend std::ostream& operator<<(std::ostream& os, User const & user);
 };

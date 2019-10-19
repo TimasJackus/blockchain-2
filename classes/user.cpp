@@ -1,9 +1,11 @@
 #include <sstream>
 #include <chrono>
+#include <iomanip>
 #include "./hash.h"
 #include "./user.h"
 
-User::User(std::string name, double balance) {
+User::User(int id, std::string name, double balance) {
+    this->id = id;
     this->name = name;
     this->balance = balance;
     this->publicKey = this->generatePublicKey(name);
@@ -17,6 +19,6 @@ std::string User::generatePublicKey(std::string name) {
 }
 
 std::ostream& operator<<(std::ostream& os, User const & user) {
-    return os << "[" << user.publicKey << "] " << user.balance << " " << user.name << std::endl;
+    return os << "[" << user.id << "] " << user.name << " " << std::fixed << std::setprecision(2) << user.balance << std::endl;
 }
 

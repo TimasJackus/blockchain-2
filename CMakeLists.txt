@@ -3,4 +3,4 @@ project(uzduotis_2)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(uzduotis_2 main.cpp classes/hash.cpp classes/hash.h classes/user.cpp classes/user.h)
+add_executable(uzduotis_2 main.cpp classes/hash.cpp classes/hash.h classes/user.cpp classes/user.h classes/transaction.h classes/transaction.cpp classes/data.cpp classes/data.h)
