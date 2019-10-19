@@ -5,5 +5,6 @@
 #include "transaction.h"
 std::vector<User> generateUsers();
 std::vector<Transaction> generateTransactions();
+int getRandomInt(int a, int b);
 
 #endif //UZDUOTIS_2_DATA_H
