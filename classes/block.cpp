@@ -1,4 +1,5 @@
 #include "block.h"
+#include "user.h"
 
 Block::Block(BlockHeader header, BlockBody body) {
     this->header = header;
@@ -19,6 +20,18 @@ void Block::mineBlock() {
     this->hash = currentHash;
 }
 
+void Block::updateUserBalances(std::vector<User> &users) {
+    this->body.updateUserBalances(users);
+}
+
 std::string Block::getHash() {
     return this->hash;
 }
+
+Block Block::createCandidateBlock(std::string previousBlockHash, std::vector<Transaction> transactions) {
+    BlockHeader blockHeader = BlockHeader(previousBlockHash, 1, 1);
+    BlockBody blockBody = BlockBody(transactions);
+    Block candidateBlock = Block(blockHeader, blockBody);
+
+    return candidateBlock;
+};

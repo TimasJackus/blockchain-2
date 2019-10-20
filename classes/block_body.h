@@ -3,11 +3,13 @@
 
 #include <vector>
 #include "transaction.h"
+#include "user.h"
 
 class BlockBody {
 public:
     BlockBody();
     BlockBody(std::vector<Transaction> transactions);
+    void updateUserBalances(std::vector<User> &users);
 private:
     std::vector<Transaction> transactions;
 };

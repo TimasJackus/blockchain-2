@@ -6,14 +6,16 @@
 class Transaction {
 public:
     Transaction(int senderId, int recipientId, double amount);
+    double getAmount();
+    int getSenderId();
+    int getRecipientId();
 
 private:
-    std::string hashValue;
+    std::string id;
     double amount;
     int senderId;
     int recipientId;
 
     std::string generateHash(int senderId, int recipientId, double amount);
-    friend std::ostream& operator<<(std::ostream& os, Transaction const & transaction);
 };
 #endif //UZDUOTIS_2_TRANSACTION_H

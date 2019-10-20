@@ -6,7 +6,7 @@
 #include "./hash.h"
 
 Transaction::Transaction(int senderId, int recipientId, double amount) {
-    this->hashValue = this->generateHash(senderId, recipientId, amount);
+    this->id = this->generateHash(senderId, recipientId, amount);
     this->senderId = senderId;
     this->recipientId = recipientId;
     this->amount = amount;
@@ -19,6 +19,14 @@ std::string Transaction::generateHash(int senderId, int recipientId, double amou
     return hash(strm.str());
 }
 
-std::ostream& operator<<(std::ostream& os, Transaction const & transaction) {
-    return os << "[" << transaction.hashValue << "] " << "S:" << transaction.senderId << " R:" << transaction.recipientId << " A:"  << std::fixed << std::setprecision(2) << transaction.amount << std::endl;
+double Transaction::getAmount() {
+    return this->amount;
+}
+
+int Transaction::getSenderId() {
+    return this->senderId;
+}
+
+int Transaction::getRecipientId() {
+    return this->recipientId;
 }

@@ -28,7 +28,7 @@ int getRandomIntNotEqualTo(int a, int b, int comparer) {
 
 std::vector<User> generateUsers() {
     std::vector<User> users;
-    for (int i = 1; i <= USERS_COUNT; i++) {
+    for (int i = 0; i < USERS_COUNT; i++) {
         std::string name = "Name" + std::to_string(i);
         double balance = getRandomDouble(10, 1000000);
         User user = User(i, name, balance);
@@ -39,10 +39,10 @@ std::vector<User> generateUsers() {
 
 std::vector<Transaction> generateTransactions() {
     std::vector<Transaction> transactions;
-    for (int i = 1; i <= TRANSACTIONS_COUNT; i++) {
+    for (int i = 0; i < TRANSACTIONS_COUNT; i++) {
         double amount = getRandomDouble(0, 500);
-        int senderId = getRandomInt(1, USERS_COUNT);
-        int recipientId = getRandomIntNotEqualTo(1, USERS_COUNT, senderId);
+        int senderId = getRandomInt(0, USERS_COUNT - 1);
+        int recipientId = getRandomIntNotEqualTo(0, USERS_COUNT - 1, senderId);
         Transaction transaction = Transaction(senderId, recipientId, amount);
         transactions.push_back(transaction);
     }

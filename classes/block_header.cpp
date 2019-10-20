@@ -1,5 +1,6 @@
 #include <chrono>
 #include <sstream>
+#include <iostream>
 #include "block_header.h"
 #include "hash.h"
 

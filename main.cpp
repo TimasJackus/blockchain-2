@@ -11,23 +11,22 @@
 int main() {
     std::vector<User> users = generateUsers();
     std::vector<Transaction> pendingTransactions = generateTransactions();
-    std::vector<Block> blockchain = { };
-    Block candidateBlock = Block(BlockHeader(), BlockBody());
-    candidateBlock.mineBlock();
-    blockchain.push_back(candidateBlock);
+    Block genesisBlock = Block(BlockHeader(), BlockBody());
+    genesisBlock.mineBlock();
+    std::vector<Block> blockchain = { genesisBlock };
 
+    while (pendingTransactions.size() >= 100) {
+        std::string previousBlockHash = blockchain.at(blockchain.size() - 1).getHash();
+        unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+        std::default_random_engine e(seed);
+        std::shuffle(std::begin(pendingTransactions), std::end(pendingTransactions), e);
 
-    // Select random transactions
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    std::default_random_engine e(seed);
-    std::vector<int> cards_ = { 1, 2, 3, 4, 5, 6, 7 };
-    std::shuffle(std::begin(cards_), std::end(cards_), e);
-
-    std::vector v2 = std::vector<int>(cards_.begin(), cards_.begin() + 4);
-    cards_.erase(cards_.begin(), cards_.begin() + 4);
-
-    for (int i = 0; i < cards_.size(); i++) {
-        std::cout << cards_[i];
+        std::vector transactions = std::vector<Transaction>(pendingTransactions.begin(), pendingTransactions.begin() + 100);
+        Block nextBlock = Block::createCandidateBlock(previousBlockHash, transactions);
+        nextBlock.mineBlock();
+        nextBlock.updateUserBalances(users);
+        blockchain.push_back(nextBlock);
+        pendingTransactions.erase(pendingTransactions.begin(), pendingTransactions.begin() + 100);
     }
 
     return 0;

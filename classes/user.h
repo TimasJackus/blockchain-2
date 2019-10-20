@@ -10,11 +10,11 @@ private:
     std::string publicKey;
 
     // Methods
-    std::string generatePublicKey(std::string name);
+    std::string generatePublicKey(int id, std::string name);
 public:
     User(int id, std::string name, double balance);
-
-    friend std::ostream& operator<<(std::ostream& os, User const & user);
+    void increaseBalance(double amount);
+    void decreaseBalance(double amount);
 };
 
 #endif //UZDUOTIS_2_USER_H
