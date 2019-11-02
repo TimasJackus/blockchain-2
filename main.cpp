@@ -7,26 +7,51 @@
 #include "classes/data.h"
 #include "classes/block.h"
 #include "classes/user.h"
+#include "classes/candidate.h"
+
+void verifyTransactions(std::vector<Transaction> &transactionPool, std::vector<User> users) {
+    int initialSize = transactionPool.size();
+    transactionPool[0].setId("Test");
+    for (int i = 0; i < transactionPool.size(); i++) {
+        Transaction transaction = transactionPool[i];
+        User sender = users[transaction.getSenderId()];
+        if (transaction.getId() != transaction.generateHash() || sender.getBalance() < transaction.getAmount()) {
+            transactionPool.erase(transactionPool.begin() + i);
+        }
+    }
+    std::cout << "Removed " << initialSize - transactionPool.size() << " invalid transactions." << std::endl;
+}
 
 int main() {
     std::vector<User> users = generateUsers();
-    std::vector<Transaction> pendingTransactions = generateTransactions();
+    std::vector<Transaction> transactionPool = generateTransactions();
     Block genesisBlock = Block(BlockHeader(), BlockBody());
     genesisBlock.mineBlock();
     std::vector<Block> blockchain = { genesisBlock };
 
-    while (pendingTransactions.size() >= 100) {
-        std::string previousBlockHash = blockchain.at(blockchain.size() - 1).getHash();
-        unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-        std::default_random_engine e(seed);
-        std::shuffle(std::begin(pendingTransactions), std::end(pendingTransactions), e);
+    verifyTransactions(transactionPool, users);
 
-        std::vector transactions = std::vector<Transaction>(pendingTransactions.begin(), pendingTransactions.begin() + 100);
-        Block nextBlock = Block::createCandidateBlock(previousBlockHash, transactions);
-        nextBlock.mineBlock();
-        nextBlock.updateUserBalances(users);
-        blockchain.push_back(nextBlock);
-        pendingTransactions.erase(pendingTransactions.begin(), pendingTransactions.begin() + 100);
+    while (transactionPool.size() > 0) {
+        std::string previousBlockHash = blockchain.at(blockchain.size() - 1).getHash();
+        std::vector<Candidate> candidates = Candidate::createCandidateList(previousBlockHash, transactionPool, 5);
+
+        bool candidateFound = false;
+        int maxTransactionsCount = transactionPool.size() >= 100 ? 100 : transactionPool.size();
+        for (int i = 0; i < candidates.size(); i++) {
+            Block nextBlock = candidates[i].getBlock();
+            if (nextBlock.mineBlock()) {
+                nextBlock.updateUserBalances(users);
+                blockchain.push_back(nextBlock);
+                int startIndex = candidates[i].getStartIndex();
+                transactionPool.erase(transactionPool.begin() + startIndex, transactionPool.begin() + startIndex + maxTransactionsCount);
+                candidateFound = true;
+                break;
+            }
+        }
+
+        if (!candidateFound) {
+            std::cout << "Candidate not found!" << std::endl;
+        }
     }
 
     return 0;

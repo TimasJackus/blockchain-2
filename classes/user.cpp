@@ -19,6 +19,10 @@ std::string User::generatePublicKey(int id, std::string name) {
     return hash(strm.str());
 }
 
+double User::getBalance() {
+    return this->balance;
+}
+
 void User::increaseBalance(double amount) {
     this->balance = this->balance + amount;
 }

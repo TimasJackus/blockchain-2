@@ -10,12 +10,11 @@ class Block {
     BlockBody body;
 
 public:
+    Block();
     Block(BlockHeader header, BlockBody body);
-    void mineBlock();
+    bool mineBlock();
     void updateUserBalances(std::vector<User> &users);
     std::string getHash();
-
-    static Block createCandidateBlock(std::string previousBlockHash, std::vector<Transaction> transactions);
 };
 
 #endif //UZDUOTIS_2_BLOCK_H

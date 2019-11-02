@@ -40,7 +40,7 @@ std::vector<User> generateUsers() {
 std::vector<Transaction> generateTransactions() {
     std::vector<Transaction> transactions;
     for (int i = 0; i < TRANSACTIONS_COUNT; i++) {
-        double amount = getRandomDouble(0, 500);
+        double amount = getRandomDouble(0, 1000000);
         int senderId = getRandomInt(0, USERS_COUNT - 1);
         int recipientId = getRandomIntNotEqualTo(0, USERS_COUNT - 1, senderId);
         Transaction transaction = Transaction(senderId, recipientId, amount);
