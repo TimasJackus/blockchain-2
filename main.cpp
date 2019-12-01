@@ -3,6 +3,8 @@
 #include <random>
 #include <algorithm>
 #include <chrono>
+#include <bitcoin/bitcoin.hpp>
+#include "classes/merkle.h"
 #include "classes/transaction.h"
 #include "classes/data.h"
 #include "classes/block.h"
@@ -53,6 +55,5 @@ int main() {
             std::cout << "Candidate not found!" << std::endl;
         }
     }
-
     return 0;
 }

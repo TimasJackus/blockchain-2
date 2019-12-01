@@ -13,8 +13,9 @@ BlockHeader::BlockHeader() {
     this->timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 }
 
-BlockHeader::BlockHeader(std::string prevBlockHash, int version, int nonce) {
+BlockHeader::BlockHeader(std::string prevBlockHash, std::string merkleRoot, int version, int nonce) {
     this->prevBlockHash = prevBlockHash;
+    this->merkleRoot = merkleRoot;
     this->version = version;
     this->nonce = nonce;
     this->difficultyTarget = DIFFICULTY_TARGET;
@@ -23,7 +24,7 @@ BlockHeader::BlockHeader(std::string prevBlockHash, int version, int nonce) {
 
 std::string BlockHeader::generateHash() {
     std::stringstream strm;
-    strm << this->prevBlockHash << this->version << this->difficultyTarget << this->timestamp << this->nonce;
+    strm << this->prevBlockHash << this->merkleRoot << this->version << this->difficultyTarget << this->timestamp << this->nonce;
     return hash(strm.str());
 }
 

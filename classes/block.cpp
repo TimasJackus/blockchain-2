@@ -2,7 +2,7 @@
 #include "block.h"
 #include "user.h"
 
-int const TIME_LIMIT_SECS = 2;
+int const TIME_LIMIT_SECS = 2.5;
 
 Block::Block() { }
 
